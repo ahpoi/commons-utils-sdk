@@ -1,0 +1,88 @@
+package com.ahpoi.commons.utils.aws.lambda.model.proxy.response;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ResponseBuilder {
+
+    private static final String ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers";
+
+    private static final String ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
+
+    private int statusCode;
+
+    private Map<String, String> headers = new HashMap<>();
+
+    private String body;
+
+    public ResponseBuilder headers(Map<String, String> headers) {
+        this.headers = headers;
+        return this;
+    }
+
+    public ResponseBuilder body(String body) {
+        this.body = body;
+        return this;
+    }
+
+    public ResponseBuilder ok() {
+        this.statusCode = 200;
+        return this;
+    }
+
+    public ResponseBuilder errorMsg(String body) {
+        this.body = buildErrorMsg(body);
+        return this;
+    }
+
+    public ResponseBuilder badRequest() {
+        this.body = buildErrorMsg("Request could not be processed");
+        this.statusCode = 400;
+        return this;
+    }
+
+    public ResponseBuilder badRequest(String body) {
+        this.body = buildErrorMsg(body);
+        this.statusCode = 400;
+        return this;
+    }
+
+    public ResponseBuilder notFound() {
+        this.body = buildErrorMsg("Resource not found");
+        this.statusCode = 404;
+        return this;
+    }
+
+    public ResponseBuilder notFound(String body) {
+        this.body = buildErrorMsg(body);
+        this.statusCode = 404;
+        return this;
+    }
+
+    public ResponseBuilder internalError() {
+        this.body = buildErrorMsg("Unknown error");
+        this.statusCode = 500;
+        return this;
+    }
+
+    public ResponseBuilder internalError(String body) {
+        this.body = buildErrorMsg(body);
+        this.statusCode = 500;
+        return this;
+    }
+
+    private String buildErrorMsg(String body) {
+        return "{\"message\": \"" + body + "\"}";
+    }
+
+    public ResponseBuilder buildHeader(String domain) {
+        headers.put(ACCESS_CONTROL_ALLOW_ORIGIN, domain);
+        headers.put(ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
+        return this;
+    }
+
+    public Response build() {
+        return new Response(statusCode, headers, body);
+    }
+
+}
