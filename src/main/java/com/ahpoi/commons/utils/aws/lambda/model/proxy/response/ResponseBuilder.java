@@ -75,7 +75,7 @@ public class ResponseBuilder {
         return "{\"message\": \"" + body + "\"}";
     }
 
-    public ResponseBuilder buildHeader(String domain) {
+    public ResponseBuilder headers(String domain) {
         headers.put(ACCESS_CONTROL_ALLOW_ORIGIN, domain);
         headers.put(ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
         return this;
