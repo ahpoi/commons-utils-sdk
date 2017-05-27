@@ -75,13 +75,17 @@ public class ResponseBuilder {
         return "{\"message\": \"" + body + "\"}";
     }
 
-    public ResponseBuilder headers(String domain) {
+    public ResponseBuilder originHeader(String domain) {
         headers.put(ACCESS_CONTROL_ALLOW_ORIGIN, domain);
-        headers.put(ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
         return this;
     }
 
+    private void initDefaultHeaders() {
+        headers.put(ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
+    }
+
     public Response build() {
+        this.initDefaultHeaders();
         return new Response(statusCode, headers, body);
     }
 
