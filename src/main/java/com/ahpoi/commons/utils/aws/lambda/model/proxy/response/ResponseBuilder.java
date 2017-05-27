@@ -47,6 +47,18 @@ public class ResponseBuilder {
         return this;
     }
 
+    public ResponseBuilder unProcessableEntity() {
+        this.body = buildErrorMsg("Request could not be processed");
+        this.statusCode = 422;
+        return this;
+    }
+
+    public ResponseBuilder unProcessableEntity(String body) {
+        this.body = buildErrorMsg(body);
+        this.statusCode = 422;
+        return this;
+    }
+
     public ResponseBuilder notFound() {
         this.body = buildErrorMsg("Resource not found");
         this.statusCode = 404;
