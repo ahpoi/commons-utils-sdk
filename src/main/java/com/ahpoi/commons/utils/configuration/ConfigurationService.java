@@ -18,7 +18,7 @@ public class ConfigurationService {
         this.properties = properties;
     }
 
-    public void loadEnv(String env) {
+    public ConfigurationService withEnv(String env) {
         LOGGER.info("Setting env to: {}", env);
         final String fileName = "application" + "-" + env.toLowerCase().trim() + ".properties";
         try (InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(fileName)) {
@@ -27,6 +27,7 @@ public class ConfigurationService {
         } catch (IOException e) {
             throw new RuntimeException("Exception occurred while loading env properties", e);
         }
+        return this;
     }
 
     public String getRequiredProperty(String key) {
